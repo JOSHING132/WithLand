@@ -1,5 +1,5 @@
 //  GuiApp.cpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -19,8 +19,8 @@
 #include "../include/gui/GuiApp.hpp"
 #include <raylib.h>
 
-//class coland::DataApp;
-namespace coland{
+//class WithLand::DataApp;
+namespace WithLand{
     #ifdef __APPLE__
         #include <mach-o/dyld.h>
     #endif
@@ -81,7 +81,7 @@ namespace coland{
         
         // [ initWindow 1 ]
         int currentMonitorMain = GetCurrentMonitor();
-        InitWindow(0, 0, "CoLand ※ colony survival simulator.");
+        InitWindow(0, 0, "WithLand ※ colony survival simulator.");
 
         Image iconApp = LoadImage("resources/img/appIcon.png");
         SetWindowIcon(iconApp);
@@ -269,7 +269,7 @@ namespace coland{
                 // [ Footer copiryght 1 ]
                 {
                     DrawRectangle(0, positionYend-sizeYfooter, positionXend, sizeYfooter, WHITE);
-                    DrawText("CoLand Copyright (C) 2026 by Sharzhukov.", 10, (positionYend - 23), 15, BLACK);
+                    DrawText("WithLand Copyright (C) 2026 by Sharzhukov.", 10, (positionYend - 23), 15, BLACK);
                 }
                 // [ Footer copiryght 0 ]
                 EndDrawing();

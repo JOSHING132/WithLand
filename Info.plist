@@ -5,9 +5,9 @@
     <key>CFBundleExecutable</key>
     <string>${PROJECT_NAME}</string>
     <key>CFBundleIdentifier</key>
-    <string>com.sharzhukov.coland</string>
+    <string>com.sharzhukov.withland</string>
     <key>CFBundleName</key>
-    <string>CoLand</string>
+    <string>WithLand</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>

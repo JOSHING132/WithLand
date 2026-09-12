@@ -1,5 +1,5 @@
 //  DataApp.hpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -22,7 +22,7 @@
 #ifndef DataApp_hpp
 #define DataApp_hpp
 
-namespace coland {
+namespace WithLand {
     class DataApp {
     public:
         void initDA();

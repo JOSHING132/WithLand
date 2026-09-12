@@ -1,17 +1,21 @@
-cmake_minimum_required(VERSION 3.15)
-project(CoLand VERSION 1.0.0 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.16)
+project(WithLand VERSION 1.0.0 LANGUAGES CXX)
 
+# ============================================
+# ОБЩИЕ НАСТРОЙКИ
+# ============================================
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-option(ENABLE_GUI "Build with Raylib GUI" OFF)
+option(ENABLE_GUI "Build GUI (Raylib). OFF = TUI" ON)
 
 # ============================================
-# ЯВНО перечисляем все файлы проекта
+# ИСХОДНИКИ ЯДРА (без main.cpp)
 # ============================================
-set(BASE_SOURCES
-    src/main.cpp
+set(CORE_SOURCES
     src/core/Colony.cpp
     src/core/Colonist.cpp
     src/core/Wedding.cpp
@@ -21,132 +25,149 @@ set(BASE_SOURCES
     src/common/common.cpp
     src/common/FileManager.cpp
     src/common/Logger.cpp
-    src/gui/lib/initWindowApp.cpp
-    src/gui/lib/DataApp.cpp
 )
 
 # ============================================
-# Добавляем GUI или TUI
+# GUI ИЛИ TUI
 # ============================================
 if(ENABLE_GUI)
-    list(APPEND BASE_SOURCES src/gui/GuiApp.cpp)
+    list(APPEND CORE_SOURCES
+        src/gui/GuiApp.cpp
+        src/gui/lib/initWindowApp.cpp
+        src/gui/lib/DataApp.cpp
+    )
     message(STATUS "🔵 Building with GUI support (Raylib)")
-    
+
     include(FetchContent)
     FetchContent_Declare(
         raylib
         GIT_REPOSITORY "https://github.com/raysan5/raylib.git"
-        GIT_TAG "5.5"
-        GIT_SHALLOW TRUE
+        GIT_TAG        "5.5"
+        GIT_SHALLOW    TRUE
     )
+    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(BUILD_GAMES    OFF CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(raylib)
-    
 else()
-    list(APPEND BASE_SOURCES src/tui/ConsoleUI.cpp)
+    list(APPEND CORE_SOURCES src/tui/ConsoleUI.cpp)
     message(STATUS "🟢 Building with TUI support (Console)")
 endif()
 
 # ============================================
-# ОСНОВНАЯ ЦЕЛЬ: CoLand (используется для обоих режимов)
+# WARNINGS (интерфейсная либа)
 # ============================================
-add_executable(${PROJECT_NAME} ${BASE_SOURCES})
-target_include_directories(${PROJECT_NAME} PRIVATE include)
+add_library(withland_warnings INTERFACE)
+if(MSVC)
+    target_compile_options(withland_warnings INTERFACE /W4 /permissive-)
+else()
+    target_compile_options(withland_warnings INTERFACE
+        -Wall -Wextra -Wpedantic -Wshadow
+    )
+endif()
+
+# ============================================
+# ЯДРО — статическая библиотека
+# ============================================
+add_library(withland_core STATIC ${CORE_SOURCES})
+
+target_include_directories(withland_core PUBLIC
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_link_libraries(withland_core PUBLIC withland_warnings)
 
 if(ENABLE_GUI)
-    target_link_libraries(${PROJECT_NAME} PRIVATE raylib)
-endif()
+    target_link_libraries(withland_core PUBLIC raylib)
 
-# ============================================
-# ИКОНКИ
-# ============================================
-if(WIN32)
-    set(ICON_FILE "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.ico")
-    if(EXISTS ${ICON_FILE})
-        configure_file(
-            "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.rc.in"
-            "${CMAKE_CURRENT_BINARY_DIR}/appIcon.rc"
-            @ONLY
+    if(APPLE)
+        target_link_libraries(withland_core PUBLIC
+            "-framework CoreVideo"
+            "-framework IOKit"
+            "-framework Cocoa"
+            "-framework OpenGL"
         )
-        target_sources(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/appIcon.rc")
-        message(STATUS "✅ Windows icon added")
-    else()
-        message(WARNING "⚠️ Windows icon not found: ${ICON_FILE}")
-    endif()
-
-elseif(APPLE)
-    set(ICON_FILE "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.icns")
-    if(EXISTS ${ICON_FILE})
-        set_source_files_properties(${ICON_FILE} PROPERTIES
-            MACOSX_PACKAGE_LOCATION Resources
-        )
-        target_sources(${PROJECT_NAME} PRIVATE ${ICON_FILE})
-        set_target_properties(${PROJECT_NAME} PROPERTIES
-            MACOSX_BUNDLE_ICON_FILE appIcon
-        )
-        message(STATUS "✅ macOS icon added")
-    else()
-        message(WARNING "⚠️ macOS icon not found: ${ICON_FILE}")
     endif()
 endif()
 
 # ============================================
-# macOS НАСТРОЙКИ (только для GUI)
+# ЦЕЛЬ 1: WithLand — чистый .app (без терминала)
 # ============================================
-if(APPLE AND ENABLE_GUI)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE TRUE
-        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/Info.plist
-        MACOSX_BUNDLE_GUI_IDENTIFIER "com.sharzhukov.coland"
-        MACOSX_BUNDLE_BUNDLE_NAME "CoLand"
-        MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0.0"
-        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
-        XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
-    )
+add_executable(WithLand src/main.cpp)
+target_link_libraries(WithLand PRIVATE withland_core)
 
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-        "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.icns"
-        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/../Resources/appIcon.icns"
-    )
-    
-    target_link_libraries(${PROJECT_NAME} PRIVATE
-        "-framework CoreVideo"
-        "-framework IOKit"
-        "-framework Cocoa"
-        "-framework GLUT"
-        "-framework OpenGL"
-    )
+if(ENABLE_GUI)
+
+    # --- Иконка macOS ---
+    if(APPLE)
+        set(ICON_FILE "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.icns")
+        if(EXISTS ${ICON_FILE})
+            set_source_files_properties(${ICON_FILE} PROPERTIES
+                MACOSX_PACKAGE_LOCATION Resources)
+            target_sources(WithLand PRIVATE ${ICON_FILE})
+        endif()
+
+        set_target_properties(WithLand PROPERTIES
+            MACOSX_BUNDLE TRUE
+            MACOSX_BUNDLE_INFO_PLIST       "${CMAKE_SOURCE_DIR}/Info.plist"
+            MACOSX_BUNDLE_GUI_IDENTIFIER   "com.sharzhukov.withland"
+            MACOSX_BUNDLE_BUNDLE_NAME      "WithLand"
+            MACOSX_BUNDLE_ICON_FILE        "appIcon"
+            MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
+            XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
+            XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
+        )
+        message(STATUS "🍎 WithLand → macOS .app bundle")
+    endif()
+
+    # --- Иконка Windows (без консольного окна) ---
+    if(WIN32)
+        set_target_properties(WithLand PROPERTIES WIN32_EXECUTABLE TRUE)
+        set(ICON_FILE "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.ico")
+        if(EXISTS ${ICON_FILE})
+            configure_file(
+                "${CMAKE_SOURCE_DIR}/resources/assets/appIcon.rc.in"
+                "${CMAKE_CURRENT_BINARY_DIR}/appIcon.rc"
+                @ONLY
+            )
+            target_sources(WithLand PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/appIcon.rc")
+        endif()
+        message(STATUS "🪟 WithLand → Windows GUI app (no console)")
+    endif()
+endif()
+
+# ============================================
+# ЦЕЛЬ 2: WithLandLog — app + терминал с логами
+# ============================================
+if(ENABLE_GUI)
+    add_executable(WithLandLog src/main.cpp)
+    target_link_libraries(WithLandLog PRIVATE withland_core)
+
+    # Макрос, по которому код понимает: работаем в log-режиме
+    target_compile_definitions(WithLandLog PRIVATE WITHLAND_LOG_MODE)
+
+    # ВАЖНО:
+    # - macOS: НЕ ставим MACOSX_BUNDLE → бинарник запускается из терминала,
+    #          stdout/stderr идут прямо в консоль
+    # - Windows: НЕ ставим WIN32_EXECUTABLE → консольное окно остаётся рядом
+    #            с окном raylib
+    message(STATUS "🐞 WithLandLog → console + GUI (log mode)")
 endif()
 
 # ============================================
 # КОПИРОВАНИЕ РЕСУРСОВ
 # ============================================
 if(ENABLE_GUI)
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    add_custom_command(TARGET WithLand POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_SOURCE_DIR}/resources"
-        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/resources"
+            "${CMAKE_SOURCE_DIR}/resources"
+            "$<TARGET_FILE_DIR:WithLand>/resources"
     )
-endif()
 
-# ============================================
-# ОТДЕЛЬНАЯ ЦЕЛЬ ДЛЯ ЛОГОВ (CoLandLog)
-# ============================================
-if(ENABLE_GUI)
-    # Копируем исходники для лог-версии
-    set(LOG_SOURCES ${BASE_SOURCES})
-    
-    add_executable(CoLandLog ${LOG_SOURCES})
-    target_include_directories(CoLandLog PRIVATE include)
-    target_link_libraries(CoLandLog PRIVATE raylib)
-    
-    if(APPLE)
-        target_link_libraries(CoLandLog PRIVATE
-            "-framework CoreVideo"
-            "-framework IOKit"
-            "-framework Cocoa"
-            "-framework GLUT"
-            "-framework OpenGL"
+    if(TARGET WithLandLog)
+        add_custom_command(TARGET WithLandLog POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+                "${CMAKE_SOURCE_DIR}/resources"
+                "$<TARGET_FILE_DIR:WithLandLog>/resources"
         )
     endif()
 endif()
@@ -156,10 +177,11 @@ endif()
 # ============================================
 message(STATUS "")
 message(STATUS "=====================================")
-message(STATUS "Project: ${PROJECT_NAME}")
-message(STATUS "Version: ${PROJECT_VERSION}")
-message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Project:      ${PROJECT_NAME}")
+message(STATUS "Version:      ${PROJECT_VERSION}")
+message(STATUS "Build Type:   ${CMAKE_BUILD_TYPE}")
 message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
-message(STATUS "GUI Support: ${ENABLE_GUI}")
+message(STATUS "GUI Support:  ${ENABLE_GUI}")
+message(STATUS "Targets:      WithLand" $<IF:$<BOOL:${ENABLE_GUI}>,", WithLandLog","">)
 message(STATUS "=====================================")
 message(STATUS "")

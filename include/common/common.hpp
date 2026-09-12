@@ -1,5 +1,5 @@
 //  common.hpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -61,7 +61,7 @@ namespace ConsoleColor {
 
 #ifndef meNamespace
 #define meNamespace
-namespace coland {
+namespace WithLand {
     // [ CL Utils ]
     inline namespace CLUtil {
         void clear();

@@ -1,5 +1,5 @@
 //  GuiApp.hpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -24,7 +24,7 @@
 #ifndef GuiApp_hpp
 #define GuiApp_hpp
 
-namespace coland {
+namespace WithLand {
     void runApplication();
 
     

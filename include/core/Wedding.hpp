@@ -1,5 +1,5 @@
 //  wedding.hpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -25,7 +25,7 @@
 
 class Colonist;
 
-namespace coland::entities {
+namespace WithLand::entities {
     class Wedding {
         int dayWedding;
         Colonist* male;

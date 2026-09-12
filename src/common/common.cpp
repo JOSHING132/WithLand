@@ -1,5 +1,5 @@
 //  common.cpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -18,19 +18,19 @@
 
 #include "../include/common/common.hpp"
 
-void coland::CLUtil::clear() {
+void WithLand::CLUtil::clear() {
     std::cout << "\033[2J\033[H";
 }
 
-void coland::CLUtil::sleep(int ms) {
+void WithLand::CLUtil::sleep(int ms) {
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
-void coland::CLUtil::getch() {
+void WithLand::CLUtil::getch() {
     std::cin.get(); 
 }
 
-std::time_t coland::CLUtil::GetTimeNow()  {
+std::time_t WithLand::CLUtil::GetTimeNow()  {
     std::chrono::time_point timeNow = std::chrono::system_clock::now();
     return std::chrono::system_clock::to_time_t(timeNow);
 }

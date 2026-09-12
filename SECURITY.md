@@ -19,7 +19,7 @@ Instead, contact the project maintainer directly:
 Please include:
 - A clear description of the vulnerability
 - Steps to reproduce it
-- The version of CoLand affected
+- The version of WithLand affected
 - Any potential fixes (if known)
 
 ## Response Time
