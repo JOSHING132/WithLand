@@ -1,5 +1,5 @@
 //  initWindowApp.hpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -19,6 +19,6 @@
 #pragma once
 #include "../include/common/common.hpp"
 
-namespace coland {
+namespace WithLand {
     void f_initWindow();
 }

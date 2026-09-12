@@ -1,5 +1,5 @@
 //  Wedding.cpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -18,7 +18,7 @@
 
 #include "../include/core/Wedding.hpp"
 
-namespace clEWedding = coland::entities;
+namespace clEWedding = WithLand::entities;
 int clEWedding::Wedding::GetDay() { return dayWedding; }
 
 void clEWedding::Wedding::SetMale(Colonist* male) { this->male = male; }

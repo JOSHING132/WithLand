@@ -1,6 +1,6 @@
-# Contributing to CoLand 🏛️
+# Contributing to WithLand 🏛️
 
-First off, thank you for considering contributing to CoLand! 🎉  
+First off, thank you for considering contributing to WithLand! 🎉  
 Your help is what makes this project better.
 
 ---
@@ -81,8 +81,8 @@ public:
 ### Build
 
 ```bash
-git clone https://github.com/your-username/CoLand.git
-cd CoLand
+git clone https://github.com/your-username/WithLand.git
+cd WithLand
 mkdir build && cd build
 cmake .. -DENABLE_GUI=ON
 cmake --build .

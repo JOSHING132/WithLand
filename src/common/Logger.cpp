@@ -1,5 +1,5 @@
 //  Logger.cpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -17,3 +17,18 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "../include/common/Logger.hpp"
+
+/*
+void Logger::Log(const std::string& message) {
+#ifdef WITHLAND_LOG_MODE
+    // Log-режим: пишем и в терминал, и в файл
+    std::cout << "[LOG] " << message << std::endl;
+#endif
+
+    // В обоих режимах пишем в файл (чтобы .app без терминала тоже оставлял след)
+    std::ofstream logFile("withland.log", std::ios::app);
+    if (logFile.is_open()) {
+        logFile << message << "\n";
+    }
+}
+*/

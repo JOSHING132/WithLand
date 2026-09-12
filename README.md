@@ -187,8 +187,8 @@ cmake -S . -B build-gui -DENABLE_GUI=ON -DCMAKE_BUILD_TYPE=Release
 
 ## 📄 Лицензия
 
-Распространяется под лицензией **MIT**.
-См. файл [LICENSE](LICENSE).
+Распространяется под лицензией **GNUv3**.
+См. файл [COPYING](COPYING).
 
 ---
 

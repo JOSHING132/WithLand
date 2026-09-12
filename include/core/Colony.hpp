@@ -1,5 +1,5 @@
 //  Colony.hpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -31,7 +31,7 @@ class Wedding;
 class Colony {
     friend std::ostream& operator << (std::ostream& out, Colony& colony);
     friend class Colonist;
-    friend class coland::entities::Wedding;
+    friend class WithLand::entities::Wedding;
 private:
     std::string pathColony;
     

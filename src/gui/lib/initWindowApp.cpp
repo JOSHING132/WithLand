@@ -1,5 +1,5 @@
 //  initWindowApp.hpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -18,7 +18,7 @@
 
 #include "../include/gui/lib/initWindowApp.hpp"
 
-namespace coland {
+namespace WithLand {
     void f_initWindow() {
     //std::cout << "ready" << std::endl;
     }

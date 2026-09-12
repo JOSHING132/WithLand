@@ -1,5 +1,5 @@
-//  main.cpp (CoLand.cpp)
-//  CoLand
+//  main.cpp (WithLand.cpp)
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -19,9 +19,9 @@
 #include "../include/LaunchApplication.hpp"
 
 int main() {
-    std::cout << YELC <<"CoLand. Copyright (C) 2026 Alexander Sharzhukov" << RESETC << std::endl;
-    coland::runApplication();
-    std::cout << YELC << "CoLand. Copyright (C) 2026 Alexander Sharzhukov" << RESETC << std::endl;
+    std::cout << YELC <<"WithLand. Copyright (C) 2026 Alexander Sharzhukov" << RESETC << std::endl;
+    WithLand::runApplication();
+    std::cout << YELC << "WithLand. Copyright (C) 2026 Alexander Sharzhukov" << RESETC << std::endl;
     std::cout << "Push \"Enter\" for exit: ";
     //TODO: std::cin.get();
     //std::vector<ColonistList> colonistList;

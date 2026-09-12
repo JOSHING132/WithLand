@@ -1,5 +1,5 @@
 //  Colonist.hpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -31,7 +31,7 @@ class Colonist {
     friend std::ostream& operator << (std::ostream& out, Colonist& colonist);
     friend std::ostream& operator << (std::ostream& out, Colony& colony);
     friend class Colony;
-    friend class coland::entities::Wedding;
+    friend class WithLand::entities::Wedding;
     
     const int MIN_VALUE_STATUS = 0;
     const int MAX_VALUE_STATUS = 100;

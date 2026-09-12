@@ -1,5 +1,5 @@
 //  DataApp.cpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -19,7 +19,7 @@
 #include "../include/gui/lib/DataApp.hpp"
 #include <raylib.h>
 
-namespace coland {
+namespace WithLand {
     void DataApp::initDA() {
         std::cout << "Hello World!" << std::endl;
     }

@@ -1,5 +1,5 @@
 //  ConsoleUI.cpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -18,7 +18,7 @@
 
 #include "../include/tui/ConsoleUI.hpp"
 
-namespace coland{
+namespace WithLand{
     void runApplication() {
         std::cout << "Building with TUI support (Console)" << std::endl;
     }

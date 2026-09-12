@@ -1,5 +1,5 @@
 //  ConsoleUI.hpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -22,7 +22,7 @@
 #ifndef ConsoleUI_hpp
 #define ConsoleUI_hpp
 
-namespace coland {
+namespace WithLand {
     void runApplication();
 }
 

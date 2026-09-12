@@ -1,5 +1,5 @@
 //  LaunchApplication.hpp
-//  CoLand
+//  WithLand
 //
 //  Copyright (C) 2026 Alexander Sharzhukov
 //
@@ -23,7 +23,7 @@
 #include "core/Enum.hpp"
 #include "core/Event.hpp"
 #include "core/Wedding.hpp"
-namespace coland {
+namespace WithLand {
     void runApplication();
 }
 
