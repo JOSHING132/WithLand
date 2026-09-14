@@ -31,7 +31,7 @@ This repository is a fork of the original WithLand project by Alexander Sharzhuk
 
 Original repository: https://github.com/Sharzhukov/WithLand
 
-Current repository: https://github.com/vctvchg-cmd/WithLand
+Current repository: https://github.com/JOSHING132/WithLand
 
 ---
 
@@ -1242,7 +1242,7 @@ https://github.com/Sharzhukov/WithLand
 
 Текущий репозиторий:
 
-https://github.com/vctvchg-cmd/WithLand
+https://github.com/JOSHING132/WithLand
 
 ---
 
