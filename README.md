@@ -265,7 +265,7 @@ The TUI and test builds use the core sources without requiring a Raylib window.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/vctvchg-cmd/WithLand.git
+git clone https://github.com/JOSHING132/WithLand.git
 cd WithLand
 ```
 
@@ -621,7 +621,7 @@ https://github.com/Sharzhukov/WithLand
 
 Current repository:
 
-https://github.com/vctvchg-cmd/WithLand
+https://github.com/JOSHING132/WithLand
 
 ---
 
@@ -654,7 +654,7 @@ WithLand — небольшой пошаговый симулятор выжив
 
 Оригинальный репозиторий: https://github.com/Sharzhukov/WithLand
 
-Текущий репозиторий: https://github.com/vctvchg-cmd/WithLand
+Текущий репозиторий: https://github.com/JOSHING132/WithLand
 
 ---
 
@@ -888,7 +888,7 @@ Raylib автоматически загружается через CMake `Fetch
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/vctvchg-cmd/WithLand.git
+git clone https://github.com/JOSHING132/WithLand.git
 cd WithLand
 ```
 
